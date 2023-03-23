@@ -1,6 +1,7 @@
 ﻿using PropertyGuard.Attribute;
 using PropertyGuard.Boot;
 using PropertyGuard.Exception;
+using PropertyGuard.Model;
 
 namespace Test;
 
@@ -17,11 +18,20 @@ public class Program
         try
         {
             GuardBoot.Filter(program);
+            GuardBoot.OnFieldCustomHandler += (PropertyGuardItem propertyGuardItem) =>
+            {
+                propertyGuardItem.Throw("");
+            };
         }
         catch (PropertyGuardException exception)
         {
             Console.WriteLine(exception.Message);
         }
+    }
+
+    private static void GuardBoot_OnFieldCustomHandler(PropertyGuard.Model.PropertyGuardItem propertyGuardItem)
+    {
+        throw new NotImplementedException();
     }
 
     public static void Main()

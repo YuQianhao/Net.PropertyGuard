@@ -9,12 +9,15 @@
 	<Authors>YuQianhao</Authors>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<RepositoryUrl>https://github.com/YuQianhao/Net.PropertyGuard</RepositoryUrl>
-	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-	<Version>1.0.3</Version>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<Version>1.0.4</Version>
 	<Company>YuQianhao</Company>
 	<Copyright>YuQianhao</Copyright>
 	<PackageProjectUrl>https://github.com/YuQianhao/Net.PropertyGuard</PackageProjectUrl>
 	<RepositoryType>git</RepositoryType>
+	<IncludeSymbols>True</IncludeSymbols>
+	<SymbolPackageFormat>symbols.nupkg</SymbolPackageFormat>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -24,5 +27,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>portable</DebugType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
