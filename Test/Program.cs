@@ -1,5 +1,6 @@
-﻿
-using PropertyGuard.Attribute;
+﻿using PropertyGuard.Attribute;
+using PropertyGuard.Boot;
+using PropertyGuard.Exception;
 
 namespace Test;
 
@@ -13,6 +14,18 @@ public class Program
 
     public static void Function(Program program)
     {
-        PropertyGuard.PropertyGuard.Filter(program);
+        try
+        {
+            GuardBoot.Filter(program);
+        }
+        catch (PropertyGuardException exception)
+        {
+            Console.WriteLine(exception.Message);
+        }
+    }
+
+    public static void Main()
+    {
+        Function(new Program());
     }
 }

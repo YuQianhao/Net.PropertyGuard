@@ -10,7 +10,7 @@ using PropertyGuard.Model;
 
 namespace PropertyGuard.Boot
 {
-    public class PropertyGuard
+    public class GuardBoot
     {
 
         /// <summary>
