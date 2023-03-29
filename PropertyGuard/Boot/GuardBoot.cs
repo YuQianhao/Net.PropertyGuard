@@ -65,6 +65,19 @@ namespace PropertyGuard.Boot
                                 }
                                 break;
                             }
+                        case PropertyUnicodeCount fieldUnicodeCount:
+                        {
+                            if (item.TargetFieldValue == null)
+                            {
+                                throw new PropertyGuardException(fieldUnicodeCount.Message, type, fieldInfo, fieldUnicodeCount, targetObject, item.TargetFieldValue);
+                            }
+                            var buffer = Encoding.UTF8.GetByteCount(item.TargetFieldValue.ToString() ?? string.Empty);
+                            if (buffer > fieldUnicodeCount.Max || buffer < fieldUnicodeCount.Min)
+                            {
+                                throw new PropertyGuardException(fieldUnicodeCount.Message, type, fieldInfo, fieldUnicodeCount, targetObject, item.TargetFieldValue);
+                            }
+                            break;
+                        }
                         case PropertyTextNotEmpty fieldTextNotEmpty:
                             {
                                 if (item.TargetFieldValue == null || string.IsNullOrEmpty(item.TargetFieldValue.ToString()))
