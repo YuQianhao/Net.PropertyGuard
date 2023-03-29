@@ -70,8 +70,8 @@ public class Program
 ## 一、如何引用
 
 ```text
-# 当前的最新版本是1.0.4
-dotnet add package PropertyGuard --version 1.0.6
+# 当前的最新版本是1.0.7
+dotnet add package PropertyGuard --version 1.0.7
 ```
 
 或者可以直接使用``Visual Sdutio``直接搜索``PropertyGuard``。
@@ -93,18 +93,18 @@ PropertyNotNull(string message = "");
 #### （2）、数字范围检查
 
 ```c#
-PropertyNumberRange(double min = 0, double max = double.MaxValue, string message = "");
+PropertyNumberRange(double min = 0, double max = double.MaxValue, bool notNull = false, string message = "");
 ```
 
-这个特性只可以用于能够被强制转换为``double``的对象。将被转换的对象与``min``和``max``做检查，不在这个范围内的时候将``message``通过异常抛出。被标注的对象是``null``的时候也将会抛出异常。
+这个特性只可以用于能够被强制转换为``double``的对象。将被转换的对象与``min``和``max``做检查，不在这个范围内的时候将``message``通过异常抛出。或者表示``notNull``开启状态并且被标注的值时null时抛出异常。
 
 #### （3）、文本长度检查
 
 ```c#
-PropertyTextLength(uint min = 0, uint max = 0, string message = "");
+PropertyTextLength(uint min = 0, uint max = uint.MaxValue, bool notNull = false, bool onlyAscii = false, string message = "");
 ```
 
-这个特性可以用于任何类型的对象。被标注的对象将会主动调用``ToString()``方法获取字符串和长度，如果长度不在``min``和``max``的范围内时，会通过异常把``message``的信息返回。被标注的对象是``null``的时候也将会抛出异常。
+这个特性可以用于任何类型的对象。被标注的对象将会主动调用``ToString()``方法获取字符串和长度，如果长度不在``min``和``max``的范围内时，会通过异常把``message``的信息返回。当标记``notNull``开启时，被标注的字段是null，或者标记``onlyAscii``开启时，被标注的字符串不符合ASCII编码时抛出异常。
 
 #### （4）、文本可空检查
 
@@ -114,27 +114,21 @@ PropertyTextNotEmpty(string message = "");
 
 这个特性可以用于任何类型的对象。被标注的对象将会主动调用``ToString()``方法获取字符串和长度，如果这个字符串是空的，或者被标注的对象是``null``，也将会抛出异常。
 
-> 这些特性可以叠加使用，但是不能重复使用，通常来说不需要叠加使用``PropertyNotNull``，所有的警卫默认会检查是否为null。
-
 #### （5）、UTF8字节长度检查
 
 ```C#
-PropertyUnicodeCount(uint min = 0, uint max = 0, string message = "");
+PropertyUnicodeCount(uint min = 0, uint max = uint.MaxValue, bool notNull = false, string message = "");
 ```
 
-这个特性用于任何类型的对象，被标注的对象将会调用``Encoding.UTF8.GetByteCount()``来获取实际占用的Unicode字符编码长度，如果不符合规则将会抛出异常。如果这个字符串是空的，或者被标注的对象是``null``，也将会抛出异常。
-
-> 这些特性可以叠加使用，但是不能重复使用，通常来说不需要叠加使用``PropertyNotNull``，所有的警卫默认会检查是否为null。
+这个特性用于任何类型的对象，被标注的对象将会调用``Encoding.UTF8.GetByteCount()``来获取实际占用的Unicode字符编码长度，如果不符合规则将会抛出异常。当标记``notNull``开启时，被标注的字段是null将抛出异常。
 
 #### （6）、ASCII字符串编码检查
 
 ```C#
-PropertyOnlyAscii(string message = "");
+PropertyOnlyAscii(bool notNull = false, string message = "");
 ```
 
-这个特性用于任何类型的对象，被标注的对象会被检查转换成字符串之后，所有的字符内容是否是ASCII字符编码。如果不是将会抛出异常。如果这个字符串是空的，或者被标注的对象是``null``，也将会抛出异常。
-
-> 这些特性可以叠加使用，但是不能重复使用，通常来说不需要叠加使用``PropertyNotNull``，所有的警卫默认会检查是否为null。
+这个特性用于任何类型的对象，被标注的对象会被检查转换成字符串之后，所有的字符内容是否是ASCII字符编码。如果不是将会抛出异常。当标记``notNull``开启时，被标注的对象是``null``，也将会抛出异常。
 
 ### 2、异常
 

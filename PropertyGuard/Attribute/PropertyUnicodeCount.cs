@@ -24,15 +24,21 @@ namespace PropertyGuard.Attribute
         public uint Max;
 
         /// <summary>
+        /// 是否允许为空
+        /// </summary>
+        public bool NotNull { get; }
+
+        /// <summary>
         /// 不符合规则时的报错
         /// </summary>
         public string Message;
 
-        public PropertyUnicodeCount(uint min = 0, uint max = uint.MaxValue, string message = "")
+        public PropertyUnicodeCount(uint min = 0, uint max = uint.MaxValue, bool notNull = false, string message = "")
         {
             Min = min;
             Max = max;
             Message = message;
+            NotNull = notNull;
         }
     }
 }

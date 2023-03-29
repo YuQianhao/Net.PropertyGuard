@@ -24,14 +24,26 @@ namespace PropertyGuard.Attribute
         public uint Max { get; }
 
         /// <summary>
+        /// 是否允许空
+        /// </summary>
+        public bool NotNull { get; }
+
+        /// <summary>
+        /// 是否只允许Ascii编码
+        /// </summary>
+        public bool OnlyAscii { get; }
+
+        /// <summary>
         /// 错误信息
         /// </summary>
         public string Message { get; }
 
-        public PropertyTextLength(uint min = 0, uint max = 0, string message = "")
+        public PropertyTextLength(uint min = 0, uint max = uint.MaxValue, bool notNull = false, bool onlyAscii = false, string message = "")
         {
             Min = min;
             Max = max;
+            NotNull = notNull;
+            OnlyAscii = onlyAscii;
             Message = message;
         }
     }

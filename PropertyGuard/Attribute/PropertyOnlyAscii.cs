@@ -16,11 +16,17 @@ namespace PropertyGuard.Attribute
         /// <summary>
         /// 异常信息
         /// </summary>
-        public string Message;
+        public string Message { get; }
 
-        public PropertyOnlyAscii(string message = "")
+        /// <summary>
+        /// 是否允许null
+        /// </summary>
+        public bool NotNull { get; }
+
+        public PropertyOnlyAscii(bool notNull = false, string message = "")
         {
             Message = message;
+            NotNull = false;
         }
     }
 }

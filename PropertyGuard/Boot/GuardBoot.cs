@@ -43,7 +43,11 @@ namespace PropertyGuard.Boot
                             {
                                 if (item.TargetFieldValue is not double)
                                 {
-                                    throw new PropertyGuardException(fieldNumberRange.Message, type, fieldInfo, fieldNumberRange, targetObject, item.TargetFieldValue);
+                                    if (fieldNumberRange.NotNull)
+                                    {
+                                        throw new PropertyGuardException(fieldNumberRange.Message, type, fieldInfo, fieldNumberRange, targetObject, item.TargetFieldValue);
+                                    }
+                                    break;
                                 }
                                 var targetValue = double.Parse(item.TargetFieldValue.ToString() ?? string.Empty);
                                 if (targetValue > fieldNumberRange.Max || targetValue < fieldNumberRange.Min)
@@ -56,10 +60,19 @@ namespace PropertyGuard.Boot
                             {
                                 if (item.TargetFieldValue == null)
                                 {
-                                    throw new PropertyGuardException(fieldTextLength.Message, type, fieldInfo, fieldTextLength, targetObject, item.TargetFieldValue);
+                                    if (fieldTextLength.NotNull)
+                                    {
+                                        throw new PropertyGuardException(fieldTextLength.Message, type, fieldInfo, fieldTextLength, targetObject, item.TargetFieldValue);
+                                    }
+                                    break;
                                 }
                                 var text = item.TargetFieldValue.ToString();
                                 if (text == null || text.Length > fieldTextLength.Max || text.Length < fieldTextLength.Min)
+                                {
+                                    throw new PropertyGuardException(fieldTextLength.Message, type, fieldInfo, fieldTextLength, targetObject, item.TargetFieldValue);
+                                }
+
+                                if (fieldTextLength.OnlyAscii && text.Length!=Encoding.UTF8.GetByteCount(text))
                                 {
                                     throw new PropertyGuardException(fieldTextLength.Message, type, fieldInfo, fieldTextLength, targetObject, item.TargetFieldValue);
                                 }
@@ -69,7 +82,11 @@ namespace PropertyGuard.Boot
                         {
                             if (item.TargetFieldValue == null)
                             {
-                                throw new PropertyGuardException(fieldUnicodeCount.Message, type, fieldInfo, fieldUnicodeCount, targetObject, item.TargetFieldValue);
+                                if (fieldUnicodeCount.NotNull)
+                                {
+                                    throw new PropertyGuardException(fieldUnicodeCount.Message, type, fieldInfo, fieldUnicodeCount, targetObject, item.TargetFieldValue);
+                                }
+                                break;
                             }
                             var buffer = Encoding.UTF8.GetByteCount(item.TargetFieldValue.ToString() ?? string.Empty);
                             if (buffer > fieldUnicodeCount.Max || buffer < fieldUnicodeCount.Min)
@@ -82,7 +99,11 @@ namespace PropertyGuard.Boot
                         {
                             if (item.TargetFieldValue == null)
                             {
-                                throw new PropertyGuardException(fieldOnlyAscii.Message, type, fieldInfo, fieldOnlyAscii, targetObject, item.TargetFieldValue);
+                                if (fieldOnlyAscii.NotNull)
+                                {
+                                    throw new PropertyGuardException(fieldOnlyAscii.Message, type, fieldInfo, fieldOnlyAscii, targetObject, item.TargetFieldValue);
+                                }
+                                break;
                             }
                             var text = item.TargetFieldValue.ToString() ?? string.Empty;
                             var buffer = Encoding.UTF8.GetByteCount(text);

@@ -28,11 +28,17 @@ namespace PropertyGuard.Attribute
         /// </summary>
         public string Message { get; }
 
-        public PropertyNumberRange(double min = 0, double max = double.MaxValue, string message = "")
+        /// <summary>
+        /// 是否允许null
+        /// </summary>
+        public bool NotNull { get; }
+
+        public PropertyNumberRange(double min = 0, double max = double.MaxValue, bool notNull = false, string message = "")
         {
             Min = min;
             Max = max;
             Message = message;
+            NotNull = notNull;
         }
     }
 }
