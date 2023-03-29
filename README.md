@@ -71,7 +71,7 @@ public class Program
 
 ```text
 # 当前的最新版本是1.0.4
-dotnet add package PropertyGuard --version 1.0.5
+dotnet add package PropertyGuard --version 1.0.6
 ```
 
 或者可以直接使用``Visual Sdutio``直接搜索``PropertyGuard``。
@@ -122,7 +122,17 @@ PropertyTextNotEmpty(string message = "");
 PropertyUnicodeCount(uint min = 0, uint max = 0, string message = "");
 ```
 
-这个特性用于任何类型的对象，被标注的对象将会调用``Encoding.UTF8.GetByteCount()``来获取实际占用的Unicode字符编码长度。如果这个字符串是空的，或者被标注的对象是``null``，也将会抛出异常。
+这个特性用于任何类型的对象，被标注的对象将会调用``Encoding.UTF8.GetByteCount()``来获取实际占用的Unicode字符编码长度，如果不符合规则将会抛出异常。如果这个字符串是空的，或者被标注的对象是``null``，也将会抛出异常。
+
+> 这些特性可以叠加使用，但是不能重复使用，通常来说不需要叠加使用``PropertyNotNull``，所有的警卫默认会检查是否为null。
+
+#### （6）、ASCII字符串编码检查
+
+```C#
+PropertyOnlyAscii(string message = "");
+```
+
+这个特性用于任何类型的对象，被标注的对象会被检查转换成字符串之后，所有的字符内容是否是ASCII字符编码。如果不是将会抛出异常。如果这个字符串是空的，或者被标注的对象是``null``，也将会抛出异常。
 
 > 这些特性可以叠加使用，但是不能重复使用，通常来说不需要叠加使用``PropertyNotNull``，所有的警卫默认会检查是否为null。
 

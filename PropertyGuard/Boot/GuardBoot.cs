@@ -78,6 +78,20 @@ namespace PropertyGuard.Boot
                             }
                             break;
                         }
+                        case PropertyOnlyAscii fieldOnlyAscii:
+                        {
+                            if (item.TargetFieldValue == null)
+                            {
+                                throw new PropertyGuardException(fieldOnlyAscii.Message, type, fieldInfo, fieldOnlyAscii, targetObject, item.TargetFieldValue);
+                            }
+                            var text = item.TargetFieldValue.ToString() ?? string.Empty;
+                            var buffer = Encoding.UTF8.GetByteCount(text);
+                            if (buffer != text.Length)
+                            {
+                                throw new PropertyGuardException(fieldOnlyAscii.Message, type, fieldInfo, fieldOnlyAscii, targetObject, item.TargetFieldValue);
+                            }
+                            break;
+                        }
                         case PropertyTextNotEmpty fieldTextNotEmpty:
                             {
                                 if (item.TargetFieldValue == null || string.IsNullOrEmpty(item.TargetFieldValue.ToString()))
