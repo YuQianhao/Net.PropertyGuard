@@ -8,7 +8,7 @@ namespace PropertyGuard.Attribute
 {
     /// <summary>
     /// 字段内容的Unicode数据长度特性。
-    /// <para>这个特性会将被注解的字段转换为Unicode，在此之后计算实际占用的字符数量。</para>
+    /// <para>这个特性会将被注解的字段转换为UTF-8，在此之后计算实际占用的字符数量。</para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class PropertyUnicodeCount : System.Attribute
