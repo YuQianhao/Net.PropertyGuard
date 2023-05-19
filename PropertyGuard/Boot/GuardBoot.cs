@@ -41,21 +41,42 @@ namespace PropertyGuard.Boot
                             throw new PropertyGuardException(fieldNotNull.Message, type, fieldInfo, fieldNotNull, targetObject, item.TargetFieldValue);
                         case PropertyNumberRange fieldNumberRange:
                             {
-                                if (item.TargetFieldValue is not double)
+                                if (item.TargetFieldValue == null)
                                 {
                                     if (fieldNumberRange.NotNull)
                                     {
                                         throw new PropertyGuardException(fieldNumberRange.Message, type, fieldInfo, fieldNumberRange, targetObject, item.TargetFieldValue);
                                     }
-                                    break;
                                 }
-                                var targetValue = double.Parse(item.TargetFieldValue.ToString() ?? string.Empty);
-                                if (targetValue > fieldNumberRange.Max || targetValue < fieldNumberRange.Min)
+                                else
                                 {
-                                    throw new PropertyGuardException(fieldNumberRange.Message, type, fieldInfo, fieldNumberRange, targetObject, item.TargetFieldValue);
+                                    double? doubleTargetValue;
+                                    try
+                                    {
+                                        doubleTargetValue =
+                                            double.Parse(item.TargetFieldValue.ToString() ?? string.Empty);
+                                    }
+                                    catch (System.Exception)
+                                    {
+                                        doubleTargetValue = null;
+                                    }
+                                    if (doubleTargetValue == null)
+                                    {
+                                        if (fieldNumberRange.NotNull)
+                                        {
+                                            throw new PropertyGuardException(fieldNumberRange.Message, type, fieldInfo, fieldNumberRange, targetObject, item.TargetFieldValue);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (doubleTargetValue > fieldNumberRange.Max || doubleTargetValue < fieldNumberRange.Min)
+                                        {
+                                            throw new PropertyGuardException(fieldNumberRange.Message, type, fieldInfo, fieldNumberRange, targetObject, item.TargetFieldValue);
+                                        }
+                                    }
                                 }
-                                break;
                             }
+                            break;
                         case PropertyTextLength fieldTextLength:
                             {
                                 if (item.TargetFieldValue == null)
@@ -64,68 +85,73 @@ namespace PropertyGuard.Boot
                                     {
                                         throw new PropertyGuardException(fieldTextLength.Message, type, fieldInfo, fieldTextLength, targetObject, item.TargetFieldValue);
                                     }
-                                    break;
                                 }
-                                var text = item.TargetFieldValue.ToString();
-                                if (text == null || text.Length > fieldTextLength.Max || text.Length < fieldTextLength.Min)
+                                else
                                 {
-                                    throw new PropertyGuardException(fieldTextLength.Message, type, fieldInfo, fieldTextLength, targetObject, item.TargetFieldValue);
+                                    var text = item.TargetFieldValue.ToString();
+                                    if (text == null || text.Length > fieldTextLength.Max || text.Length < fieldTextLength.Min)
+                                    {
+                                        throw new PropertyGuardException(fieldTextLength.Message, type, fieldInfo, fieldTextLength, targetObject, item.TargetFieldValue);
+                                    }
+                                    if (fieldTextLength.OnlyAscii && text.Length != Encoding.UTF8.GetByteCount(text))
+                                    {
+                                        throw new PropertyGuardException(fieldTextLength.Message, type, fieldInfo, fieldTextLength, targetObject, item.TargetFieldValue);
+                                    }
                                 }
-
-                                if (fieldTextLength.OnlyAscii && text.Length!=Encoding.UTF8.GetByteCount(text))
-                                {
-                                    throw new PropertyGuardException(fieldTextLength.Message, type, fieldInfo, fieldTextLength, targetObject, item.TargetFieldValue);
-                                }
-                                break;
                             }
+                            break;
                         case PropertyUnicodeCount fieldUnicodeCount:
-                        {
-                            if (item.TargetFieldValue == null)
                             {
-                                if (fieldUnicodeCount.NotNull)
+                                if (item.TargetFieldValue == null)
                                 {
-                                    throw new PropertyGuardException(fieldUnicodeCount.Message, type, fieldInfo, fieldUnicodeCount, targetObject, item.TargetFieldValue);
+                                    if (fieldUnicodeCount.NotNull)
+                                    {
+                                        throw new PropertyGuardException(fieldUnicodeCount.Message, type, fieldInfo, fieldUnicodeCount, targetObject, item.TargetFieldValue);
+                                    }
                                 }
-                                break;
-                            }
-                            var buffer = Encoding.UTF8.GetByteCount(item.TargetFieldValue.ToString() ?? string.Empty);
-                            if (buffer > fieldUnicodeCount.Max || buffer < fieldUnicodeCount.Min)
-                            {
-                                throw new PropertyGuardException(fieldUnicodeCount.Message, type, fieldInfo, fieldUnicodeCount, targetObject, item.TargetFieldValue);
+                                else
+                                {
+                                    var buffer = Encoding.UTF8.GetByteCount(item.TargetFieldValue.ToString() ?? string.Empty);
+                                    if (buffer > fieldUnicodeCount.Max || buffer < fieldUnicodeCount.Min)
+                                    {
+                                        throw new PropertyGuardException(fieldUnicodeCount.Message, type, fieldInfo, fieldUnicodeCount, targetObject, item.TargetFieldValue);
+                                    }
+                                }
                             }
                             break;
-                        }
                         case PropertyOnlyAscii fieldOnlyAscii:
-                        {
-                            if (item.TargetFieldValue == null)
                             {
-                                if (fieldOnlyAscii.NotNull)
+                                if (item.TargetFieldValue == null)
                                 {
-                                    throw new PropertyGuardException(fieldOnlyAscii.Message, type, fieldInfo, fieldOnlyAscii, targetObject, item.TargetFieldValue);
+                                    if (fieldOnlyAscii.NotNull)
+                                    {
+                                        throw new PropertyGuardException(fieldOnlyAscii.Message, type, fieldInfo, fieldOnlyAscii, targetObject, item.TargetFieldValue);
+                                    }
                                 }
-                                break;
-                            }
-                            var text = item.TargetFieldValue.ToString() ?? string.Empty;
-                            var buffer = Encoding.UTF8.GetByteCount(text);
-                            if (buffer != text.Length)
-                            {
-                                throw new PropertyGuardException(fieldOnlyAscii.Message, type, fieldInfo, fieldOnlyAscii, targetObject, item.TargetFieldValue);
+                                else
+                                {
+                                    var text = item.TargetFieldValue.ToString() ?? string.Empty;
+                                    var buffer = Encoding.UTF8.GetByteCount(text);
+                                    if (buffer != text.Length)
+                                    {
+                                        throw new PropertyGuardException(fieldOnlyAscii.Message, type, fieldInfo, fieldOnlyAscii, targetObject, item.TargetFieldValue);
+                                    }
+                                }
                             }
                             break;
-                        }
                         case PropertyTextNotEmpty fieldTextNotEmpty:
                             {
                                 if (item.TargetFieldValue == null || string.IsNullOrEmpty(item.TargetFieldValue.ToString()))
                                 {
                                     throw new PropertyGuardException(fieldTextNotEmpty.Message, type, fieldInfo, fieldTextNotEmpty, targetObject, item.TargetFieldValue);
                                 }
-                                break;
                             }
+                            break;
                         default:
                             {
                                 OnFieldCustomHandler?.Invoke(item);
-                                break;
                             }
+                            break;
                     }
                 }
             }

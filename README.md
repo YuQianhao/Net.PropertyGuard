@@ -70,8 +70,8 @@ public class Program
 ## 一、如何引用
 
 ```text
-# 当前的最新版本是1.0.7
-dotnet add package PropertyGuard --version 1.0.7
+# 当前的最新版本是1.0.8
+dotnet add package PropertyGuard --version 1.0.8
 ```
 
 或者可以直接使用``Visual Sdutio``直接搜索``PropertyGuard``。
